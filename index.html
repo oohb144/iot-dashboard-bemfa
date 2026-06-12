@@ -875,7 +875,7 @@ body {
   <div class="settings-body">
     <div class="settings-group">
       <label for="uidInput">UID (私钥)</label>
-      <input type="text" id="uidInput" class="settings-input" value="ODk2NjhmYTBmZDI1NDk5YzkyZTEyMDY2NDU4NDM1YWQ=">
+      <input type="text" id="uidInput" class="settings-input" value="89668fa0fd25499c92e12066458435ad">
       <p class="hint">您的巴法云私钥，用于身份验证和获取设备数据。</p>
     </div>
 
@@ -1073,7 +1073,7 @@ body {
 
 // ---- Configuration ----
 const CONFIG = {
-  uid: 'ODk2NjhmYTBmZDI1NDk5YzkyZTEyMDY2NDU4NDM1YWQ=',
+  uid: '89668fa0fd25499c92e12066458435ad',
   sensorTopic: 'sensorData',
   ledTopic: 'ledControl',
   refreshMs: 10000,
@@ -1200,7 +1200,8 @@ async function fetchSensorData() {
     showConnBar(true);
     const result = await apiGet('/va/getmsg', {
       uid: CONFIG.uid,
-      topic: CONFIG.sensorTopic
+      topic: CONFIG.sensorTopic,
+      type: 1
     });
 
     if (result.code !== 0) {
@@ -1241,7 +1242,8 @@ async function checkOnlineStatus() {
   try {
     const result = await apiGet('/va/online', {
       uid: CONFIG.uid,
-      topic: CONFIG.sensorTopic
+      topic: CONFIG.sensorTopic,
+      type: 1
     });
 
     const online = result.code === 0 && result.data && result.data.online === 1;
@@ -1261,6 +1263,7 @@ async function controlLed(action) {
     const result = await apiPost('/va/postJsonMsg', {
       uid: CONFIG.uid,
       topic: CONFIG.ledTopic,
+      type: 1,
       msg: action
     });
 
